@@ -19,7 +19,11 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "License :: OSI Approved :: MIT License",
 ]
-dependencies = []
+dependencies = [
+    "oro-db>=0.1.0",
+    "cryptography>=41.0",
+    "PyJWT>=2.8",
+]
 
 [project.optional-dependencies]
 dev = [
@@ -41,6 +45,7 @@ line-length = 120
 src = ["src", "tests"]
 
 [tool.ruff.lint]
+per-file-ignores = {"src/oro_privacy/migration.py" = ["E501"]}
 select = ["E", "F", "I", "N", "W", "UP", "B", "C4"]
 
 [tool.ruff.lint.isort]
@@ -52,6 +57,18 @@ disallow_untyped_defs = true
 strict_optional = true
 warn_redundant_casts = true
 warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+module = ["oro_db", "oro_db.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["cryptography", "cryptography.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["jwt", "jwt.*"]
+ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
