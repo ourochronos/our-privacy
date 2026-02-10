@@ -4,7 +4,7 @@ from datetime import UTC, datetime
 
 import pytest
 
-from oro_privacy.canary import (
+from our_privacy.canary import (
     ZERO_WIDTH_JOINER,
     ZERO_WIDTH_NON_JOINER,
     ZERO_WIDTH_SPACE,

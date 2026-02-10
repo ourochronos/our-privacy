@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from oro_privacy.audit import (
+from our_privacy.audit import (
     AuditEvent,
     AuditEventType,
     AuditLogger,

@@ -6,7 +6,7 @@ for different audience privacy levels.
 
 from dataclasses import dataclass
 
-from oro_privacy.provenance import (
+from our_privacy.provenance import (
     ProvenanceChain,
     ProvenanceTier,
     filter_provenance,

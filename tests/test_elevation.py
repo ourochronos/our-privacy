@@ -5,7 +5,7 @@ from datetime import UTC, datetime
 
 import pytest
 
-from oro_privacy.elevation import (
+from our_privacy.elevation import (
     ElevationError,
     ElevationProposal,
     ElevationService,
@@ -18,7 +18,7 @@ from oro_privacy.elevation import (
     propose_elevation,
     reject_elevation,
 )
-from oro_privacy.types import ShareLevel
+from our_privacy.types import ShareLevel
 
 
 class TestProposalStatus:

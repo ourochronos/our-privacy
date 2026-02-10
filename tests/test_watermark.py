@@ -5,7 +5,7 @@ from datetime import UTC, datetime
 
 import pytest
 
-from oro_privacy.watermark import (
+from our_privacy.watermark import (
     HOMOGLYPH_MAP,
     REVERSE_HOMOGLYPH_MAP,
     WATERMARK_MAGIC,

@@ -8,7 +8,7 @@ privacy module:
 
 Note: Tests for federation-specific hardening (sensitive domain classification,
 budget consumption, consent store LRU, aggregated sync logging) live in
-oro-federation.
+our-federation.
 """
 
 import secrets
@@ -25,7 +25,7 @@ class TestAuditPIISanitization:
 
     def test_email_sanitized(self):
         """Email addresses are redacted."""
-        from oro_privacy.audit import sanitize_metadata
+        from our_privacy.audit import sanitize_metadata
 
         result = sanitize_metadata({"contact": "user@example.com"})
         assert "[PII_REDACTED]" in result["contact"]
@@ -33,14 +33,14 @@ class TestAuditPIISanitization:
 
     def test_phone_sanitized(self):
         """Phone numbers are redacted."""
-        from oro_privacy.audit import sanitize_metadata
+        from our_privacy.audit import sanitize_metadata
 
         result = sanitize_metadata({"phone": "555-123-4567"})
         assert "[PII_REDACTED]" in result["phone"]
 
     def test_ssn_sanitized(self):
         """SSN key is sensitive and value is fully redacted."""
-        from oro_privacy.audit import sanitize_metadata
+        from our_privacy.audit import sanitize_metadata
 
         # "ssn" is a sensitive key, so value is fully redacted (not PII pattern)
         result = sanitize_metadata({"ssn": "123-45-6789"})
@@ -48,7 +48,7 @@ class TestAuditPIISanitization:
 
     def test_sensitive_keys_fully_redacted(self):
         """Keys named after sensitive data are fully redacted."""
-        from oro_privacy.audit import sanitize_metadata
+        from our_privacy.audit import sanitize_metadata
 
         result = sanitize_metadata(
             {
@@ -63,7 +63,7 @@ class TestAuditPIISanitization:
 
     def test_non_sensitive_preserved(self):
         """Non-sensitive data is preserved."""
-        from oro_privacy.audit import sanitize_metadata
+        from our_privacy.audit import sanitize_metadata
 
         result = sanitize_metadata(
             {
@@ -78,7 +78,7 @@ class TestAuditPIISanitization:
 
     def test_audit_event_auto_sanitizes(self):
         """AuditEvent automatically sanitizes metadata on creation."""
-        from oro_privacy.audit import AuditEvent, AuditEventType
+        from our_privacy.audit import AuditEvent, AuditEventType
 
         event = AuditEvent(
             event_type=AuditEventType.ACCESS_DENIED,
@@ -100,21 +100,21 @@ class TestWatermarkSecurityWarnings:
 
     def test_minimum_key_length_enforced(self):
         """Short secret keys are rejected."""
-        from oro_privacy.watermark import WatermarkRegistry
+        from our_privacy.watermark import WatermarkRegistry
 
         with pytest.raises(ValueError, match="at least 16 bytes"):
             WatermarkRegistry(secret_key=b"short")
 
     def test_valid_key_accepted(self):
         """Valid length keys work."""
-        from oro_privacy.watermark import WatermarkRegistry
+        from our_privacy.watermark import WatermarkRegistry
 
         registry = WatermarkRegistry(secret_key=secrets.token_bytes(32))
         assert registry.secret_key is not None
 
     def test_repr_hides_secret(self):
         """__repr__ doesn't expose the secret key."""
-        from oro_privacy.watermark import WatermarkRegistry
+        from our_privacy.watermark import WatermarkRegistry
 
         key = secrets.token_bytes(32)
         registry = WatermarkRegistry(secret_key=key)
@@ -135,13 +135,13 @@ class TestCapabilityTTL:
 
     def test_default_ttl_is_15_minutes(self):
         """Default TTL should be 15 minutes, not 1 hour."""
-        from oro_privacy.capabilities import DEFAULT_TTL_SECONDS
+        from our_privacy.capabilities import DEFAULT_TTL_SECONDS
 
         assert DEFAULT_TTL_SECONDS == 900  # 15 * 60
 
     def test_capability_uses_new_default(self):
         """New capabilities use the reduced TTL."""
-        from oro_privacy.capabilities import Capability
+        from our_privacy.capabilities import Capability
 
         cap = Capability.create(
             issuer_did="did:example:issuer",
@@ -161,7 +161,7 @@ class TestCanaryStripWarning:
 
     def test_docstring_contains_warning(self):
         """strip_canaries docstring contains security warning."""
-        from oro_privacy.canary import strip_canaries
+        from our_privacy.canary import strip_canaries
 
         docstring = strip_canaries.__doc__
         assert "WARNING" in docstring or "\u26a0\ufe0f" in docstring
@@ -169,7 +169,7 @@ class TestCanaryStripWarning:
 
     def test_strip_canaries_still_works(self):
         """Function still strips canaries despite warnings."""
-        from oro_privacy.canary import (
+        from our_privacy.canary import (
             CanaryToken,
             EmbeddingStrategy,
             embed_canary,
@@ -195,7 +195,7 @@ class TestExtractionRateLimiting:
 
     def test_rate_limit_enforced(self):
         """Requests beyond limit are rejected."""
-        from oro_privacy.extraction import (
+        from our_privacy.extraction import (
             ExtractionLevel,
             ExtractionService,
             RateLimitConfig,
@@ -219,7 +219,7 @@ class TestExtractionRateLimiting:
 
     def test_different_dids_have_separate_limits(self):
         """Different DIDs have independent rate limits."""
-        from oro_privacy.extraction import (
+        from our_privacy.extraction import (
             ExtractionLevel,
             ExtractionService,
             RateLimitConfig,
@@ -241,7 +241,7 @@ class TestExtractionRateLimiting:
 
     def test_rate_limit_status_reporting(self):
         """Rate limit status is correctly reported."""
-        from oro_privacy.extraction import (
+        from our_privacy.extraction import (
             ExtractionLevel,
             ExtractionService,
             RateLimitConfig,
@@ -263,7 +263,7 @@ class TestExtractionRateLimiting:
 
     def test_no_did_skips_rate_limit(self):
         """Requests without DID skip rate limiting."""
-        from oro_privacy.extraction import (
+        from our_privacy.extraction import (
             ExtractionLevel,
             ExtractionService,
             RateLimitConfig,

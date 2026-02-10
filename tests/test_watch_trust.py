@@ -12,7 +12,7 @@ Tests the separation of 'seeing content' from 'giving reputation weight':
 
 from __future__ import annotations
 
-from oro_privacy.trust import (
+from our_privacy.trust import (
     RelationshipType,
     TrustEdge,
     TrustService,

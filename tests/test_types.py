@@ -2,7 +2,7 @@
 
 from datetime import UTC, datetime, timedelta
 
-from oro_privacy.types import (
+from our_privacy.types import (
     EnforcementType,
     PropagationRules,
     ShareLevel,

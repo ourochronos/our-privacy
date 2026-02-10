@@ -14,7 +14,7 @@ from datetime import UTC, datetime, timedelta
 import pytest
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
-from oro_privacy.capabilities import (
+from our_privacy.capabilities import (
     DEFAULT_TTL_SECONDS,
     MAX_TTL_SECONDS,
     Capability,
@@ -1360,7 +1360,7 @@ import time  # noqa: E402
 
 import jwt as pyjwt  # noqa: E402
 
-from oro_privacy.capabilities import CapabilityInvalidError  # noqa: E402
+from our_privacy.capabilities import CapabilityInvalidError  # noqa: E402
 
 
 class TestCapabilityJWTSerialization:

@@ -2,7 +2,7 @@
 
 import pytest
 
-from oro_privacy.encryption import EncryptionEnvelope, generate_keypair
+from our_privacy.encryption import EncryptionEnvelope, generate_keypair
 
 
 class TestGenerateKeypair:

@@ -5,7 +5,7 @@ from datetime import UTC, datetime
 
 import pytest
 
-from oro_privacy.domains import (
+from our_privacy.domains import (
     AdminSignatureVerifier,
     DNSTxtVerifier,
     Domain,

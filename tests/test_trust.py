@@ -16,7 +16,7 @@ from uuid import uuid4
 
 import pytest
 
-from oro_privacy.trust import (
+from our_privacy.trust import (
     TrustEdge,
     TrustGraphStore,
     TrustService,
@@ -526,7 +526,7 @@ class TestTrustGraphStore:
     @pytest.fixture
     def mock_cursor(self):
         """Create a mock cursor for database tests."""
-        with patch("oro_db.get_cursor") as mock_get_cursor:
+        with patch("our_db.get_cursor") as mock_get_cursor:
             mock_cur = MagicMock()
             mock_ctx = MagicMock()
             mock_ctx.__enter__ = MagicMock(return_value=mock_cur)
@@ -827,7 +827,7 @@ class TestModuleFunctions:
     def test_get_trust_graph_store_singleton(self):
         """Test that get_trust_graph_store returns singleton."""
         # Reset module state
-        import oro_privacy.trust as trust_module
+        import our_privacy.trust as trust_module
 
         trust_module._default_store = None
 
@@ -1614,7 +1614,7 @@ class TestDomainScopedConvenienceFunctions:
     @pytest.fixture(autouse=True)
     def reset_service(self):
         """Reset the global service before each test."""
-        import oro_privacy.trust as trust_module
+        import our_privacy.trust as trust_module
 
         trust_module._default_service = None
         yield
@@ -1704,7 +1704,7 @@ class TestDelegatedTrustComputation:
     @pytest.fixture
     def service(self):
         """Fresh TrustService instance for each test (in-memory)."""
-        from oro_privacy.trust import TrustService
+        from our_privacy.trust import TrustService
 
         return TrustService(use_memory=True)
 
@@ -2134,8 +2134,8 @@ class TestComputeDelegatedTrustConvenienceFunction:
 
     def test_convenience_function_uses_default_service(self):
         """Test that the convenience function uses the default service."""
-        import oro_privacy.trust as trust_module
-        from oro_privacy.trust import (
+        import our_privacy.trust as trust_module
+        from our_privacy.trust import (
             compute_delegated_trust_from_service,
             get_trust_service,
             grant_trust,
@@ -2189,7 +2189,7 @@ class TestFederationTrustEdge:
 
     def test_create_basic_federation_edge(self):
         """Test creating a basic federation trust edge."""
-        from oro_privacy.trust import FederationTrustEdge
+        from our_privacy.trust import FederationTrustEdge
 
         edge = FederationTrustEdge(
             source_federation="acme-corp",
@@ -2207,7 +2207,7 @@ class TestFederationTrustEdge:
 
     def test_create_federation_edge_with_values(self):
         """Test creating federation edge with custom values."""
-        from oro_privacy.trust import FederationTrustEdge
+        from our_privacy.trust import FederationTrustEdge
 
         edge = FederationTrustEdge(
             source_federation="acme-corp",
@@ -2229,7 +2229,7 @@ class TestFederationTrustEdge:
 
     def test_federation_edge_invalid_scores(self):
         """Test validation of federation edge scores."""
-        from oro_privacy.trust import FederationTrustEdge
+        from our_privacy.trust import FederationTrustEdge
 
         with pytest.raises(ValueError, match="competence must be between"):
             FederationTrustEdge(
@@ -2247,7 +2247,7 @@ class TestFederationTrustEdge:
 
     def test_federation_edge_no_self_trust(self):
         """Test that self-trust is rejected."""
-        from oro_privacy.trust import FederationTrustEdge
+        from our_privacy.trust import FederationTrustEdge
 
         with pytest.raises(ValueError, match="Cannot create federation trust edge to self"):
             FederationTrustEdge(
@@ -2257,7 +2257,7 @@ class TestFederationTrustEdge:
 
     def test_federation_edge_overall_trust(self):
         """Test overall trust calculation for federation edge."""
-        from oro_privacy.trust import FederationTrustEdge
+        from our_privacy.trust import FederationTrustEdge
 
         edge = FederationTrustEdge(
             source_federation="a",
@@ -2271,7 +2271,7 @@ class TestFederationTrustEdge:
 
     def test_federation_edge_source_target_did(self):
         """Test DID-style properties for storage compatibility."""
-        from oro_privacy.trust import FEDERATION_PREFIX, FederationTrustEdge
+        from our_privacy.trust import FEDERATION_PREFIX, FederationTrustEdge
 
         edge = FederationTrustEdge(
             source_federation="acme-corp",
@@ -2283,7 +2283,7 @@ class TestFederationTrustEdge:
 
     def test_federation_edge_to_trust_edge(self):
         """Test conversion to TrustEdge for storage."""
-        from oro_privacy.trust import FederationTrustEdge, TrustEdge
+        from our_privacy.trust import FederationTrustEdge, TrustEdge
 
         fed_edge = FederationTrustEdge(
             source_federation="acme-corp",
@@ -2305,7 +2305,7 @@ class TestFederationTrustEdge:
 
     def test_federation_edge_from_trust_edge(self):
         """Test conversion from TrustEdge."""
-        from oro_privacy.trust import FederationTrustEdge, TrustEdge
+        from our_privacy.trust import FederationTrustEdge, TrustEdge
 
         trust_edge = TrustEdge(
             source_did="federation:acme-corp",
@@ -2325,7 +2325,7 @@ class TestFederationTrustEdge:
 
     def test_federation_edge_from_trust_edge_invalid_prefix(self):
         """Test that from_trust_edge rejects non-federation edges."""
-        from oro_privacy.trust import FederationTrustEdge, TrustEdge
+        from our_privacy.trust import FederationTrustEdge, TrustEdge
 
         trust_edge = TrustEdge(
             source_did="did:key:alice",
@@ -2337,7 +2337,7 @@ class TestFederationTrustEdge:
 
     def test_federation_edge_serialization(self):
         """Test to_dict/from_dict roundtrip."""
-        from oro_privacy.trust import FederationTrustEdge
+        from our_privacy.trust import FederationTrustEdge
 
         original = FederationTrustEdge(
             source_federation="acme-corp",
@@ -2365,7 +2365,7 @@ class TestFederationMembershipRegistry:
 
     def test_register_member(self):
         """Test registering a DID to a federation."""
-        from oro_privacy.trust import FederationMembershipRegistry
+        from our_privacy.trust import FederationMembershipRegistry
 
         registry = FederationMembershipRegistry()
         registry.register_member("did:key:alice", "acme-corp")
@@ -2374,7 +2374,7 @@ class TestFederationMembershipRegistry:
 
     def test_get_members(self):
         """Test getting all members of a federation."""
-        from oro_privacy.trust import FederationMembershipRegistry
+        from our_privacy.trust import FederationMembershipRegistry
 
         registry = FederationMembershipRegistry()
         registry.register_member("did:key:alice", "acme-corp")
@@ -2389,7 +2389,7 @@ class TestFederationMembershipRegistry:
 
     def test_unregister_member(self):
         """Test unregistering a DID from a federation."""
-        from oro_privacy.trust import FederationMembershipRegistry
+        from our_privacy.trust import FederationMembershipRegistry
 
         registry = FederationMembershipRegistry()
         registry.register_member("did:key:alice", "acme-corp")
@@ -2401,7 +2401,7 @@ class TestFederationMembershipRegistry:
 
     def test_unregister_unknown_member(self):
         """Test unregistering a DID that isn't registered."""
-        from oro_privacy.trust import FederationMembershipRegistry
+        from our_privacy.trust import FederationMembershipRegistry
 
         registry = FederationMembershipRegistry()
         result = registry.unregister_member("did:key:unknown")
@@ -2409,7 +2409,7 @@ class TestFederationMembershipRegistry:
 
     def test_change_federation(self):
         """Test changing a DID's federation membership."""
-        from oro_privacy.trust import FederationMembershipRegistry
+        from our_privacy.trust import FederationMembershipRegistry
 
         registry = FederationMembershipRegistry()
         registry.register_member("did:key:alice", "acme-corp")
@@ -2421,7 +2421,7 @@ class TestFederationMembershipRegistry:
 
     def test_clear_registry(self):
         """Test clearing the registry."""
-        from oro_privacy.trust import FederationMembershipRegistry
+        from our_privacy.trust import FederationMembershipRegistry
 
         registry = FederationMembershipRegistry()
         registry.register_member("did:key:alice", "acme-corp")
@@ -2588,7 +2588,7 @@ class TestEffectiveTrustWithFederation:
     @pytest.fixture
     def registry(self):
         """Fresh federation registry for each test."""
-        from oro_privacy.trust import FederationMembershipRegistry
+        from our_privacy.trust import FederationMembershipRegistry
 
         return FederationMembershipRegistry()
 
@@ -2863,7 +2863,7 @@ class TestFederationTrustConvenienceFunctions:
     @pytest.fixture(autouse=True)
     def reset_singletons(self):
         """Reset singletons before each test."""
-        import oro_privacy.trust as trust_module
+        import our_privacy.trust as trust_module
 
         trust_module._default_service = None
         trust_module._federation_registry = None
@@ -2873,7 +2873,7 @@ class TestFederationTrustConvenienceFunctions:
 
     def test_set_and_get_federation_trust(self):
         """Test set_federation_trust and get_federation_trust convenience functions."""
-        from oro_privacy.trust import (
+        from our_privacy.trust import (
             get_federation_trust,
             set_federation_trust,
         )
@@ -2894,7 +2894,7 @@ class TestFederationTrustConvenienceFunctions:
 
     def test_revoke_federation_trust(self):
         """Test revoke_federation_trust convenience function."""
-        from oro_privacy.trust import (
+        from our_privacy.trust import (
             get_federation_trust,
             revoke_federation_trust,
             set_federation_trust,
@@ -2915,7 +2915,7 @@ class TestFederationTrustConvenienceFunctions:
 
     def test_register_and_get_federation_member(self):
         """Test register_federation_member and get_did_federation functions."""
-        from oro_privacy.trust import (
+        from our_privacy.trust import (
             get_did_federation,
             register_federation_member,
         )
@@ -2927,7 +2927,7 @@ class TestFederationTrustConvenienceFunctions:
 
     def test_unregister_federation_member(self):
         """Test unregister_federation_member function."""
-        from oro_privacy.trust import (
+        from our_privacy.trust import (
             get_did_federation,
             register_federation_member,
             unregister_federation_member,
@@ -2941,7 +2941,7 @@ class TestFederationTrustConvenienceFunctions:
 
     def test_get_effective_trust_with_federation_convenience(self):
         """Test get_effective_trust_with_federation convenience function."""
-        from oro_privacy.trust import (
+        from our_privacy.trust import (
             get_effective_trust_with_federation,
             register_federation_member,
             set_federation_trust,
@@ -3016,7 +3016,7 @@ class TestClockSkewTolerance:
         Edge that expired slightly less than CLOCK_SKEW_TOLERANCE ago should
         still be considered valid.
         """
-        from oro_privacy.trust import CLOCK_SKEW_TOLERANCE
+        from our_privacy.trust import CLOCK_SKEW_TOLERANCE
 
         # Edge that expired 1 second less than tolerance ago (4:59 ago for 5 min tolerance)
         edge = TrustEdge(
@@ -3030,7 +3030,7 @@ class TestClockSkewTolerance:
 
     def test_is_expired_just_beyond_tolerance(self):
         """Test edge just past the tolerance boundary."""
-        from oro_privacy.trust import CLOCK_SKEW_TOLERANCE
+        from our_privacy.trust import CLOCK_SKEW_TOLERANCE
 
         # Edge that expired just past tolerance (5 min 1 sec ago)
         edge = TrustEdge(
@@ -3044,7 +3044,7 @@ class TestClockSkewTolerance:
 
     def test_federation_trust_edge_clock_skew_tolerance(self):
         """Test that FederationTrustEdge also respects clock skew tolerance."""
-        from oro_privacy.trust import FederationTrustEdge
+        from our_privacy.trust import FederationTrustEdge
 
         # FederationTrustEdge that expired 3 minutes ago
         edge = FederationTrustEdge(
@@ -3061,7 +3061,7 @@ class TestClockSkewTolerance:
 
     def test_federation_trust_edge_beyond_tolerance(self):
         """Test FederationTrustEdge beyond clock skew tolerance."""
-        from oro_privacy.trust import FederationTrustEdge
+        from our_privacy.trust import FederationTrustEdge
 
         # FederationTrustEdge that expired 10 minutes ago
         edge = FederationTrustEdge(
@@ -3078,7 +3078,7 @@ class TestClockSkewTolerance:
 
     def test_clock_skew_tolerance_is_five_minutes(self):
         """Test that CLOCK_SKEW_TOLERANCE defaults to 5 minutes."""
-        from oro_privacy.trust import CLOCK_SKEW_TOLERANCE
+        from our_privacy.trust import CLOCK_SKEW_TOLERANCE
 
         assert CLOCK_SKEW_TOLERANCE == timedelta(minutes=5)
 

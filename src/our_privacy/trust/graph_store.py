@@ -39,7 +39,7 @@ class TrustGraphStore:
             The stored edge with ID and timestamps populated
         """
 
-        from oro_db import get_cursor
+        from our_db import get_cursor
 
         now = datetime.now(UTC)
 
@@ -110,7 +110,7 @@ class TrustGraphStore:
         Returns:
             The trust edge if found, None otherwise
         """
-        from oro_db import get_cursor
+        from our_db import get_cursor
 
         with get_cursor() as cur:
             if domain is not None:
@@ -174,7 +174,7 @@ class TrustGraphStore:
         Returns:
             List of trust edges
         """
-        from oro_db import get_cursor
+        from our_db import get_cursor
 
         with get_cursor() as cur:
             query = """
@@ -232,7 +232,7 @@ class TrustGraphStore:
         Returns:
             List of trust edges
         """
-        from oro_db import get_cursor
+        from our_db import get_cursor
 
         with get_cursor() as cur:
             query = """
@@ -290,7 +290,7 @@ class TrustGraphStore:
         Returns:
             True if an edge was deleted, False otherwise
         """
-        from oro_db import get_cursor
+        from our_db import get_cursor
 
         with get_cursor() as cur:
             if domain is not None:
@@ -324,7 +324,7 @@ class TrustGraphStore:
         Returns:
             Number of edges deleted
         """
-        from oro_db import get_cursor
+        from our_db import get_cursor
 
         with get_cursor() as cur:
             cur.execute(
@@ -347,7 +347,7 @@ class TrustGraphStore:
         Returns:
             Number of edges deleted
         """
-        from oro_db import get_cursor
+        from our_db import get_cursor
 
         with get_cursor() as cur:
             cur.execute(
@@ -367,7 +367,7 @@ class TrustGraphStore:
         Returns:
             Number of edges deleted
         """
-        from oro_db import get_cursor
+        from our_db import get_cursor
 
         with get_cursor() as cur:
             cur.execute(
@@ -396,7 +396,7 @@ class TrustGraphStore:
         Returns:
             Number of matching edges
         """
-        from oro_db import get_cursor
+        from our_db import get_cursor
 
         with get_cursor() as cur:
             query = "SELECT COUNT(*) as count FROM trust_edges WHERE 1=1"

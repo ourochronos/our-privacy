@@ -6,8 +6,8 @@ from dataclasses import dataclass
 
 import pytest
 
-from oro_privacy.encryption import EncryptionEnvelope, generate_keypair
-from oro_privacy.sharing import (
+from our_privacy.encryption import EncryptionEnvelope, generate_keypair
+from our_privacy.sharing import (
     ConsentChainEntry,
     Notification,
     PropagateRequest,
@@ -18,7 +18,7 @@ from oro_privacy.sharing import (
     ShareRequest,
     SharingService,
 )
-from oro_privacy.types import (
+from our_privacy.types import (
     EnforcementType,
     PropagationRules,
     ShareLevel,
@@ -3836,7 +3836,7 @@ class TestStripOnForwardWithPropagate:
     @pytest.mark.asyncio
     async def test_propagate_strips_original_fields(self, service, db, identity, domain_service):
         """Test that propagate() strips fields from original policy."""
-        from oro_privacy.sharing import PropagateRequest
+        from our_privacy.sharing import PropagateRequest
 
         original_content = json.dumps(
             {
@@ -3899,7 +3899,7 @@ class TestStripOnForwardWithPropagate:
     @pytest.mark.asyncio
     async def test_propagate_composes_strip_fields(self, service, db, identity, domain_service):
         """Test that propagate() unions strip fields from original and additional restrictions."""
-        from oro_privacy.sharing import PropagateRequest
+        from our_privacy.sharing import PropagateRequest
 
         original_content = json.dumps(
             {
@@ -3971,7 +3971,7 @@ class TestStripOnForwardWithPropagate:
     @pytest.mark.asyncio
     async def test_propagate_nested_field_stripping(self, service, db, identity, domain_service):
         """Test propagate() with nested field stripping."""
-        from oro_privacy.sharing import PropagateRequest
+        from our_privacy.sharing import PropagateRequest
 
         original_content = json.dumps(
             {
@@ -4041,7 +4041,7 @@ class TestStripFieldsHelper:
 
     def test_strip_single_flat_field(self):
         """Test stripping a single top-level field."""
-        from oro_privacy.sharing import strip_fields_from_content
+        from our_privacy.sharing import strip_fields_from_content
 
         content = json.dumps({"a": 1, "b": 2, "c": 3}).encode("utf-8")
         result = strip_fields_from_content(content, ["b"])
@@ -4053,7 +4053,7 @@ class TestStripFieldsHelper:
 
     def test_strip_nested_field(self):
         """Test stripping a nested field."""
-        from oro_privacy.sharing import strip_fields_from_content
+        from our_privacy.sharing import strip_fields_from_content
 
         content = json.dumps(
             {
@@ -4074,7 +4074,7 @@ class TestStripFieldsHelper:
 
     def test_strip_nonexistent_field(self):
         """Test that stripping nonexistent field doesn't error."""
-        from oro_privacy.sharing import strip_fields_from_content
+        from our_privacy.sharing import strip_fields_from_content
 
         content = json.dumps({"a": 1}).encode("utf-8")
         result = strip_fields_from_content(content, ["nonexistent", "a.b.c"])
@@ -4084,7 +4084,7 @@ class TestStripFieldsHelper:
 
     def test_strip_empty_list(self):
         """Test stripping with empty list returns original."""
-        from oro_privacy.sharing import strip_fields_from_content
+        from our_privacy.sharing import strip_fields_from_content
 
         content = json.dumps({"a": 1}).encode("utf-8")
         result = strip_fields_from_content(content, [])
@@ -4093,7 +4093,7 @@ class TestStripFieldsHelper:
 
     def test_strip_non_json_returns_original(self):
         """Test that non-JSON content is returned unchanged."""
-        from oro_privacy.sharing import strip_fields_from_content
+        from our_privacy.sharing import strip_fields_from_content
 
         content = b"This is not JSON"
         result = strip_fields_from_content(content, ["field"])
@@ -4104,7 +4104,7 @@ class TestStripFieldsHelper:
         """Test that original content is not modified."""
         import copy
 
-        from oro_privacy.sharing import strip_fields_from_content
+        from our_privacy.sharing import strip_fields_from_content
 
         original = {"nested": {"secret": "value", "other": "keep"}}
         content = json.dumps(original).encode("utf-8")

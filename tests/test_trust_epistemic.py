@@ -17,7 +17,7 @@ import math
 
 import pytest
 
-from oro_privacy.trust import (
+from our_privacy.trust import (
     DEFAULT_EPISTEMIC_WEIGHTS,
     EPISTEMIC_DIMENSIONS,
     TRUST_SCHEMA_CORE,
@@ -661,7 +661,7 @@ class TestEpistemicDelegation:
     """Tests for delegated trust preserving epistemic dimensions."""
 
     def test_delegated_trust_includes_dimensions(self):
-        from oro_privacy.trust.computation import compute_delegated_trust
+        from our_privacy.trust.computation import compute_delegated_trust
 
         direct = TrustEdge.with_epistemic(
             "did:key:alice",

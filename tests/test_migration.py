@@ -5,13 +5,13 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from oro_privacy.migration import (
+from our_privacy.migration import (
     get_share_policy_json,
     migrate_all_beliefs,
     migrate_all_beliefs_sync,
     migrate_visibility,
 )
-from oro_privacy.types import EnforcementType, ShareLevel
+from our_privacy.types import EnforcementType, ShareLevel
 
 
 class TestMigrateVisibility:
@@ -105,7 +105,7 @@ class TestMigrateVisibility:
 
     def test_private_roundtrip(self):
         """Test that private migration can be deserialized back to SharePolicy."""
-        from oro_privacy.types import SharePolicy
+        from our_privacy.types import SharePolicy
 
         result = migrate_visibility("private")
         policy = SharePolicy.from_dict(result)
@@ -115,7 +115,7 @@ class TestMigrateVisibility:
 
     def test_federated_roundtrip(self):
         """Test that federated migration can be deserialized back to SharePolicy."""
-        from oro_privacy.types import SharePolicy
+        from our_privacy.types import SharePolicy
 
         result = migrate_visibility("federated")
         policy = SharePolicy.from_dict(result)
@@ -126,7 +126,7 @@ class TestMigrateVisibility:
 
     def test_public_roundtrip(self):
         """Test that public migration can be deserialized back to SharePolicy."""
-        from oro_privacy.types import SharePolicy
+        from our_privacy.types import SharePolicy
 
         result = migrate_visibility("public")
         policy = SharePolicy.from_dict(result)
@@ -304,7 +304,7 @@ class TestMigrationCorrectness:
 
     def test_all_visibility_levels_produce_valid_policies(self):
         """Test that all visibility levels produce valid SharePolicy objects."""
-        from oro_privacy.types import SharePolicy
+        from our_privacy.types import SharePolicy
 
         visibility_levels = [
             "private",
@@ -326,7 +326,7 @@ class TestMigrationCorrectness:
 
     def test_private_cannot_share(self):
         """Test that migrated private policy blocks sharing."""
-        from oro_privacy.types import SharePolicy
+        from our_privacy.types import SharePolicy
 
         result = migrate_visibility("private")
         policy = SharePolicy.from_dict(result)
@@ -335,7 +335,7 @@ class TestMigrationCorrectness:
 
     def test_public_can_share(self):
         """Test that migrated public policy allows sharing."""
-        from oro_privacy.types import SharePolicy
+        from our_privacy.types import SharePolicy
 
         result = migrate_visibility("public")
         policy = SharePolicy.from_dict(result)
@@ -344,7 +344,7 @@ class TestMigrationCorrectness:
 
     def test_federated_has_bounded_scope(self):
         """Test that federated migration creates bounded scope with federation domain."""
-        from oro_privacy.types import ShareLevel, SharePolicy
+        from our_privacy.types import ShareLevel, SharePolicy
 
         result = migrate_visibility("federated")
         policy = SharePolicy.from_dict(result)

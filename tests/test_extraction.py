@@ -5,7 +5,7 @@ from typing import Any
 
 import pytest
 
-from oro_privacy.extraction import (
+from our_privacy.extraction import (
     ExtractedInsight,
     ExtractionAlreadyReviewedError,
     # Errors

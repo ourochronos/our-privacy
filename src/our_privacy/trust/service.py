@@ -937,7 +937,7 @@ class TrustService:
             return count
         else:
             # Note: This deletes ALL edges in the database - use with caution
-            from oro_db import get_cursor
+            from our_db import get_cursor
 
             with get_cursor() as cur:
                 cur.execute("DELETE FROM trust_edges RETURNING id")

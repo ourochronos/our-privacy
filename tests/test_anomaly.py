@@ -4,7 +4,7 @@ from datetime import UTC, datetime, timedelta
 
 import pytest
 
-from oro_privacy.anomaly import (
+from our_privacy.anomaly import (
     AnomalyAlert,
     AnomalyDetector,
     AnomalyType,

@@ -5,7 +5,7 @@ from datetime import UTC, datetime, timedelta
 
 import pytest
 
-from oro_privacy.reports import (
+from our_privacy.reports import (
     AuditRecord,
     BeliefRecord,
     DataReport,

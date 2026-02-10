@@ -4,7 +4,7 @@ from datetime import UTC, datetime
 
 import pytest
 
-from oro_privacy.corroboration import (
+from our_privacy.corroboration import (
     # Constants
     DEFAULT_CORROBORATION_THRESHOLD,
     DEFAULT_SIMILARITY_THRESHOLD,
@@ -29,8 +29,8 @@ from oro_privacy.corroboration import (
     propose_auto_elevation,
     set_corroboration_detector,
 )
-from oro_privacy.elevation import ProposalStatus
-from oro_privacy.types import ShareLevel
+from our_privacy.elevation import ProposalStatus
+from our_privacy.types import ShareLevel
 
 
 class TestCosineSimilarity:

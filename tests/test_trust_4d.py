@@ -4,7 +4,7 @@ from datetime import UTC, datetime, timedelta
 
 import pytest
 
-from oro_privacy.trust import TrustEdge
+from our_privacy.trust import TrustEdge
 
 
 class TestTrustEdgeCreation:

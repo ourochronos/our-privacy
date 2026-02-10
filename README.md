@@ -1,4 +1,4 @@
-# oro-privacy
+# our-privacy
 
 Trust graph, capabilities, audit, encryption, and watermarking
 
@@ -9,13 +9,13 @@ _Brief description of what this brick does and why it exists._
 ## Install
 
 ```bash
-pip install oro-privacy
+pip install our-privacy
 ```
 
 ## Usage
 
 ```python
-from oro_privacy import ...
+from our_privacy import ...
 ```
 
 ## API

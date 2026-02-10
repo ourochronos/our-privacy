@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "oro-privacy"
+name = "our-privacy"
 version = "0.1.0"
 description = "Trust graph, capabilities, audit, encryption, and watermarking"
 readme = "README.md"
@@ -20,7 +20,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
 ]
 dependencies = [
-    "oro-db>=0.1.0",
+    "our-db>=0.1.0",
     "cryptography>=41.0",
     "PyJWT>=2.8",
 ]
@@ -37,7 +37,7 @@ dev = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/oro_privacy"]
+packages = ["src/our_privacy"]
 
 [tool.ruff]
 target-version = "py311"
@@ -45,11 +45,11 @@ line-length = 120
 src = ["src", "tests"]
 
 [tool.ruff.lint]
-per-file-ignores = {"src/oro_privacy/migration.py" = ["E501"]}
+per-file-ignores = {"src/our_privacy/migration.py" = ["E501"]}
 select = ["E", "F", "I", "N", "W", "UP", "B", "C4"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["oro_privacy"]
+known-first-party = ["our_privacy"]
 
 [tool.mypy]
 python_version = "3.11"
@@ -59,7 +59,7 @@ warn_redundant_casts = true
 warn_unused_ignores = true
 
 [[tool.mypy.overrides]]
-module = ["oro_db", "oro_db.*"]
+module = ["our_db", "our_db.*"]
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
@@ -81,7 +81,7 @@ markers = [
 
 [tool.coverage.run]
 branch = true
-source = ["src/oro_privacy"]
+source = ["src/our_privacy"]
 
 [tool.coverage.report]
 show_missing = true
