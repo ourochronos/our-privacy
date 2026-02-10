@@ -25,6 +25,10 @@ dependencies = [
     "PyJWT>=2.8",
 ]
 
+[project.urls]
+Homepage = "https://github.com/ourochronos/our-privacy"
+Repository = "https://github.com/ourochronos/our-privacy"
+
 [project.optional-dependencies]
 dev = [
     "pytest>=8.0",
