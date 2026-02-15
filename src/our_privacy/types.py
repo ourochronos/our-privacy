@@ -196,10 +196,14 @@ class IntentConfig:
     def to_share_policy(self) -> SharePolicy:
         """Generate the appropriate SharePolicy for this intent."""
         effective_max_hops = self.max_hops if self.max_hops is not None else _INTENT_DEFAULT_MAX_HOPS[self.intent]
-        propagation = PropagationRules(
-            max_hops=effective_max_hops,
-            expires_at=self.expires_at,
-        ) if effective_max_hops is not None or self.expires_at is not None else None
+        propagation = (
+            PropagationRules(
+                max_hops=effective_max_hops,
+                expires_at=self.expires_at,
+            )
+            if effective_max_hops is not None or self.expires_at is not None
+            else None
+        )
 
         if self.intent == SharingIntent.KNOW_ME:
             return SharePolicy(
