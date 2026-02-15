@@ -142,3 +142,112 @@ class SharePolicy:
             now = datetime.now(UTC).replace(tzinfo=None)
             return now > self.propagation.expires_at
         return False
+
+
+class SharingIntent(Enum):
+    """High-level sharing intents that map to SharePolicy configurations.
+
+    These represent the *why* of sharing, not just the mechanics:
+    - know_me: Share identity/context with a specific trusted person
+    - work_with_me: Collaborate with a bounded group
+    - learn_from_me: Publish knowledge for others to build on
+    - use_this: Make something freely available
+    """
+
+    KNOW_ME = "know_me"
+    WORK_WITH_ME = "work_with_me"
+    LEARN_FROM_ME = "learn_from_me"
+    USE_THIS = "use_this"
+
+
+# Default max_hops per intent (None = unlimited)
+_INTENT_DEFAULT_MAX_HOPS: dict[SharingIntent, int | None] = {
+    SharingIntent.KNOW_ME: 0,
+    SharingIntent.WORK_WITH_ME: 2,
+    SharingIntent.LEARN_FROM_ME: None,
+    SharingIntent.USE_THIS: None,
+}
+
+
+@dataclass
+class IntentConfig:
+    """Configuration that pairs a SharingIntent with the generated SharePolicy.
+
+    Preserves the user's original sharing decision (the intent) alongside
+    the mechanical policy it produces. This lets us show "you shared this
+    as know_me" rather than just "DIRECT + CRYPTOGRAPHIC + max_hops=0".
+
+    Args:
+        intent: The high-level sharing intent
+        recipients: Required for know_me, optional for others
+        max_hops: Override default max_hops for the intent
+        expires_at: Optional expiration for the share
+    """
+
+    intent: SharingIntent
+    recipients: list[str] | None = None
+    max_hops: int | None = None  # None means use intent default
+    expires_at: datetime | None = None
+
+    def __post_init__(self) -> None:
+        if self.intent == SharingIntent.KNOW_ME and not self.recipients:
+            raise ValueError("know_me intent requires at least one recipient")
+
+    def to_share_policy(self) -> SharePolicy:
+        """Generate the appropriate SharePolicy for this intent."""
+        effective_max_hops = self.max_hops if self.max_hops is not None else _INTENT_DEFAULT_MAX_HOPS[self.intent]
+        propagation = PropagationRules(
+            max_hops=effective_max_hops,
+            expires_at=self.expires_at,
+        ) if effective_max_hops is not None or self.expires_at is not None else None
+
+        if self.intent == SharingIntent.KNOW_ME:
+            return SharePolicy(
+                level=ShareLevel.DIRECT,
+                enforcement=EnforcementType.CRYPTOGRAPHIC,
+                recipients=self.recipients,
+                propagation=propagation,
+            )
+        elif self.intent == SharingIntent.WORK_WITH_ME:
+            return SharePolicy(
+                level=ShareLevel.BOUNDED,
+                enforcement=EnforcementType.POLICY,
+                recipients=self.recipients,
+                propagation=propagation,
+            )
+        elif self.intent == SharingIntent.LEARN_FROM_ME:
+            return SharePolicy(
+                level=ShareLevel.CASCADING,
+                enforcement=EnforcementType.POLICY,
+                propagation=propagation,
+            )
+        else:  # USE_THIS
+            return SharePolicy(
+                level=ShareLevel.PUBLIC,
+                enforcement=EnforcementType.HONOR,
+                propagation=propagation,
+            )
+
+    def to_dict(self) -> dict[str, Any]:
+        """Serialize to dictionary for JSONB storage."""
+        return {
+            "intent": self.intent.value,
+            "recipients": self.recipients,
+            "max_hops": self.max_hops,
+            "expires_at": self.expires_at.isoformat() if self.expires_at else None,
+            "policy": self.to_share_policy().to_dict(),
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "IntentConfig":
+        """Deserialize from dictionary."""
+        expires_at = None
+        if data.get("expires_at"):
+            expires_at = datetime.fromisoformat(data["expires_at"])
+
+        return cls(
+            intent=SharingIntent(data["intent"]),
+            recipients=data.get("recipients"),
+            max_hops=data.get("max_hops"),
+            expires_at=expires_at,
+        )

@@ -159,7 +159,7 @@ from .trust import (
     list_trusters,
     revoke_trust,
 )
-from .types import EnforcementType, PropagationRules, ShareLevel, SharePolicy
+from .types import EnforcementType, IntentConfig, PropagationRules, ShareLevel, SharePolicy, SharingIntent
 from .watermark import (
     Watermark,
     WatermarkCodec,
@@ -180,6 +180,8 @@ __all__ = [
     "EnforcementType",
     "PropagationRules",
     "SharePolicy",
+    "SharingIntent",
+    "IntentConfig",
     # Encryption
     "EncryptionEnvelope",
     # Canary tokens
